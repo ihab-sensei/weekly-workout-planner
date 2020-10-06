@@ -66,3 +66,17 @@ This section has moved here: https://facebook.github.io/create-react-app/docs/de
 ### `yarn build` fails to minify
 
 This section has moved here: https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify
+
+1- We have week days board iniatially.
+2- User picks a day and clicks "Create/add new workout button".
+3 - This invokes a form function. which used to create a new workout.
+With workoutName/header input we set the doc name and the key value of workoutName.  
+We use the user input of the workout name to set two things:
+1- the name of the doc
+2- the workoutName key value of the doc
+
+In this form we only get 1 input from user.
+
+4- Inside a workout division we want a create/add section button
+We show sectionName input sectionDescription input. Possibly 3 auto-generated sections.
+Pop up a form of section with an add new section button.

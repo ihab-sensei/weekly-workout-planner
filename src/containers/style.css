@@ -1,0 +1,5 @@
+.containerBoard {
+  display: flex;
+  flex-flow: row;
+  justify-content: space-between;
+}
