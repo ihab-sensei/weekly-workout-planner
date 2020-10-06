@@ -1,7 +1,7 @@
 import React from "react";
 import Day from "./Day";
 import "./style.css";
-import { Card, Col, Row } from 'antd';
+import { Card, Col, Row } from "antd";
 
 export default function DaysBoard() {
   const DAYS = [
@@ -15,10 +15,18 @@ export default function DaysBoard() {
   ];
 
   return (
-    <div className="containerBoard">
-      {DAYS.map((day) => (
-        <Day key={day} name={day} />
-      ))}
+    <div className="site-card-wrapper">
+      <Row gutter={16}>
+        {DAYS.map((day) => (
+          <Col span={3} style={{ marginLeft: "1.1rem" }}>
+            <Card hoverable title={day} bordered style={{ width: "10.5rem" }}>
+              <Day key={day} name={day} />
+            </Card>
+          </Col>
+        ))}
+      </Row>
     </div>
   );
 }
+
+/*  */

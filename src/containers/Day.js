@@ -49,10 +49,8 @@ export default function Day({ name }) {
 
   return (
     <div className="weekDay">
-      <h2>{name}</h2>
+      <h3>Workouts:</h3>
       <ul>
-        {" "}
-        <h3>Workouts</h3>
         {day.map((workout) => (
           <Workout
             setUpdateCounter={setUpdateCounter}

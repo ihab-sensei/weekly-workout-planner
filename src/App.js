@@ -1,5 +1,7 @@
 import React from "react";
 import "./App.css";
+import "antd/dist/antd.css";
+
 import DaysBoard from "./containers/DaysBoard";
 
 function App() {
