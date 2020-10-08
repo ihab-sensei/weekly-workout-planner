@@ -16,9 +16,16 @@ export default function DaysBoard() {
 
   return (
     <div className="site-card-wrapper">
-      <Row gutter={16}>
+      <Row gutter={{ xs: 8, sm: 16, md: 24, lg: 32 }}>
         {DAYS.map((day) => (
-          <Col span={3} style={{ marginLeft: "1.1rem" }}>
+          <Col
+            xs={16}
+            sm={10}
+            md={8}
+            lg={6}
+            xl={3}
+            style={{ marginLeft: "1.1rem" }}
+          >
             <Card hoverable title={day} bordered style={{ width: "10.5rem" }}>
               <Day key={day} name={day} />
             </Card>

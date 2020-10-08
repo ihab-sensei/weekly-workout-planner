@@ -3,17 +3,22 @@ import SectionForm from "../components/SectionForm";
 import db from "../firebaseConfig";
 import Section from "../components/Section";
 import EditWorkoutForm from "../components/EditWorkoutForm";
+import { Tooltip, Typography, Button, Modal } from "antd";
+import { EditOutlined, DeleteOutlined } from "@ant-design/icons";
+
+const { Title } = Typography;
 export default function Workout({
   name,
   workout,
   addSections,
   setUpdateCounter
 }) {
+  const [modalState, setModalState] = useState({ visible: false });
+
   const [sectionFormState, setSectionFormState] = useState({
     sectionName: "",
     sectionDescription: ""
   });
-  const [isEditing, setIsEditing] = useState(false);
   const [sections, setSections] = useState([]);
   const [updateWorkoutCounter, setUpdateWorkoutCounter] = useState({
     counter: 0
@@ -47,9 +52,6 @@ export default function Workout({
         console.error("Error removing document: ", err);
       });
   };
-  const handleIsEditing = () => {
-    setIsEditing(!isEditing);
-  };
 
   const editWorkout = (e) => {
     e.preventDefault();
@@ -60,24 +62,52 @@ export default function Workout({
     setUpdateCounter((previousState) => {
       return { counter: previousState.counter + 1 };
     });
+    handleOk();
+  };
+  const showModal = () => {
+    setModalState({
+      visible: true
+    });
+  };
+
+  const handleOk = () => {
+    setModalState({
+      visible: false
+    });
+  };
+
+  const handleCancel = () => {
+    setModalState({
+      visible: false
+    });
   };
 
   return (
     <>
-      <li>
-        {isEditing ? (
-          <EditWorkoutForm
-            workoutName={workout.workoutName}
-            editWorkout={editWorkout}
-            setEditWorkoutFormState={setEditWorkoutFormState}
-            editWorkoutFormState={editWorkoutFormState}
+      <div>
+        <Title style={{ display: "inline" }} level={5}>
+          {workout.workoutName}
+        </Title>
+        <Tooltip title="Edit">
+          <Button
+            onClick={showModal}
+            type="text"
+            shape="circle"
+            icon={<EditOutlined />}
+          ></Button>
+        </Tooltip>
+        <Tooltip title="Delete">
+          <Button
+            danger={true}
+            onClick={deleteWorkout}
+            type="text"
+            shape="circle"
+            icon={<DeleteOutlined />}
           />
-        ) : null}
-        <b>{workout.workoutName}</b>
-        <button onClick={handleIsEditing}>Edit</button>
-        <button onClick={deleteWorkout}>Delete</button>
-        <Section sections={sections} />
-      </li>
+        </Tooltip>
+      </div>
+
+      <Section sections={sections} />
       <SectionForm
         setUpdateWorkoutCounter={setUpdateWorkoutCounter}
         sectionFormState={sectionFormState}
@@ -85,6 +115,19 @@ export default function Workout({
         addSections={addSections}
         workoutName={workout.workoutName}
       />
+
+      <Modal
+        title="Edit the name of the workout"
+        visible={modalState.visible}
+        onOk={editWorkout}
+        onCancel={handleCancel}
+      >
+        <EditWorkoutForm
+          workoutName={workout.workoutName}
+          setEditWorkoutFormState={setEditWorkoutFormState}
+          editWorkoutFormState={editWorkoutFormState}
+        />
+      </Modal>
     </>
   );
 }

@@ -1,7 +1,8 @@
 import React from "react";
+import { Input, Tooltip } from "antd";
+import { InfoCircleOutlined, FireOutlined } from "@ant-design/icons";
 
 export default function WorkoutForm({
-  addWorkout,
   workoutFormState,
   setWorkoutFormState,
   name
@@ -13,16 +14,21 @@ export default function WorkoutForm({
     });
   };
   return (
-    <form onSubmit={(e) => addWorkout(e)}>
-      <label>Workout name:</label>
-      <input
+    <div>
+      <Input
         type="text"
         id={name}
         name="workoutName"
         value={workoutFormState.name}
         onChange={(e) => handleChange(e)}
+        placeholder="Enter workout name"
+        prefix={<FireOutlined className="site-form-item-icon" />}
+        suffix={
+          <Tooltip title="e.g:Leg Day...">
+            <InfoCircleOutlined style={{ color: "rgba(0,0,0,.45)" }} />
+          </Tooltip>
+        }
       />
-      <input type="submit" value="Add workout" />
-    </form>
+    </div>
   );
 }

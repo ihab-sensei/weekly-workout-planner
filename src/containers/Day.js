@@ -2,7 +2,11 @@ import React, { useEffect, useState } from "react";
 import Workout from "./Workout";
 import WorkoutForm from "../components/WorkoutForm";
 import db from "../firebaseConfig";
+import { Button, Modal, Tooltip } from "antd";
+import { PlusOutlined } from "@ant-design/icons";
+
 export default function Day({ name }) {
+  const [modalState, setModalState] = useState({ visible: false });
   const [day, setDay] = useState([]);
   const [updateCounter, setUpdateCounter] = useState({ counter: 0 });
   const [workoutFormState, setWorkoutFormState] = useState({
@@ -14,15 +18,32 @@ export default function Day({ name }) {
     Saturday: "",
     Sunday: ""
   });
+  const showModal = () => {
+    setModalState({
+      visible: true
+    });
+  };
 
-  const addWorkout = (e) => {
-    e.preventDefault();
+  const handleOk = () => {
+    setModalState({
+      visible: false
+    });
+  };
+
+  const handleCancel = () => {
+    setModalState({
+      visible: false
+    });
+  };
+
+  const addWorkout = () => {
     db.collection(name)
       .doc(workoutFormState[name])
       .set({ workoutName: workoutFormState[name] });
     setUpdateCounter((previousState) => {
       return { counter: previousState.counter + 1 };
     });
+    handleOk();
   };
   const addSections = (e, workoutName, sectionName, sectionDescription) => {
     e.preventDefault();
@@ -49,23 +70,38 @@ export default function Day({ name }) {
 
   return (
     <div className="weekDay">
-      <h3>Workouts:</h3>
-      <ul>
-        {day.map((workout) => (
-          <Workout
-            setUpdateCounter={setUpdateCounter}
-            name={name}
-            addSections={addSections}
-            workout={workout}
-          />
-        ))}
-      </ul>
-      <WorkoutForm
-        workoutFormState={workoutFormState}
-        setWorkoutFormState={setWorkoutFormState}
-        addWorkout={addWorkout}
-        name={name}
-      />
+      <Tooltip title="Add">
+        <Button
+          onClick={showModal}
+          type="primary"
+          icon={<PlusOutlined />}
+          size="small"
+        >
+          Workout
+        </Button>
+      </Tooltip>
+
+      {day.map((workout) => (
+        <Workout
+          setUpdateCounter={setUpdateCounter}
+          name={name}
+          addSections={addSections}
+          workout={workout}
+        />
+      ))}
+
+      <Modal
+        title="Add a new workout"
+        visible={modalState.visible}
+        onOk={addWorkout}
+        onCancel={handleCancel}
+      >
+        <WorkoutForm
+          workoutFormState={workoutFormState}
+          setWorkoutFormState={setWorkoutFormState}
+          name={name}
+        />
+      </Modal>
     </div>
   );
 }
