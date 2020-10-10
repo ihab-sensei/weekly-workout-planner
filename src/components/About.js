@@ -6,12 +6,14 @@ const { Title, Text } = Typography;
 export default function About() {
   return (
     <Space direction="vertical">
-      <Title>About This Web-Site</Title>
+      <Title>About Weekly-Workout-Planner</Title>
       <Text>
-        Lorem ipsum dolor sit amet consectetur, adipisicing elit. Laboriosam
-        odio perferendis repudiandae voluptatum mollitia quibusdam voluptas
-        possimus, dolore voluptatem modi, error pariatur consequatur ipsam,
-        fugiat ab magni aliquid vero consequuntur.
+        Sup' Bro! You want to learn more about this website! Cool! <br/>
+        This website is designed by ThiccBois to help plan your workouts bruh;
+        You can add the workouts you want to do and you can add the section names too.
+        Sick, right ?! Anyway, the dudes who designed this website care about ease of
+        use, so you can easily use it (duh!?), without training. Keep on rockin' that tank top,
+        No pain, no gain etc. !
       </Text>
     </Space>
   );

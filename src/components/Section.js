@@ -47,7 +47,7 @@ export default function Section({
           }}
           type="text"
           shape="circle"
-          icon={<MoreOutlined />}
+          icon={<DeleteOutlined />}
         />
       </Tooltip>
     );
@@ -55,17 +55,19 @@ export default function Section({
 
   const menu = (
     <Menu>
-      <Menu.Item key="1" DeleteOutlined>
+      <Menu.Item key="1" >
         {deleteExtraButton()}
       </Menu.Item>
-      <Menu.Item key="2" DeleteOutlined>
+      <Menu.Item key="2" >
         Edit
       </Menu.Item>
     </Menu>
   );
 
   const menuExtraButton = () => {
-    return <Dropdown overlay={menu}></Dropdown>;
+    return <Tooltip title="More" placement="top"><Dropdown overlay={menu}>
+      <MoreOutlined/>
+    </Dropdown> </Tooltip>;
   };
 
   return (
