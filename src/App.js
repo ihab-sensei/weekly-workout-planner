@@ -21,7 +21,7 @@ function App() {
     <Router>
     <Layout className="layout">
       <Header>
-      <div className="logo" />
+      <FireTwoTone className="logo" />
         
         <NavBar/>
       </Header>
