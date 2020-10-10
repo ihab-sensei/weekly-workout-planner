@@ -5,32 +5,28 @@ import { DownOutlined } from "@ant-design/icons";
 
 export default function Navbar() {
   const menu = (
-    <Menu>
-      <Menu.Item>
-        <Link rel="noopener noreferrer" to="/" exact>
+    <Menu theme="dark" mode="horizontal" defaultSelectedKeys={["2"]}>
+      <Menu.Item key="1">
+        <Link  to="/" exact>
           Home
         </Link>
       </Menu.Item>
 
-      <Menu.Item>
-        <Link rel="noopener noreferrer" to="/board">
+      <Menu.Item key="2">
+        <Link  to="/board">
           Board
         </Link>
       </Menu.Item>
 
-      <Menu.Item>
+      <Menu.Item key="3">
         <Link to="/about">About</Link>
       </Menu.Item>
     </Menu>
   );
 
   return (
-    <Dropdown overlay={menu}>
-      <Button type="primary">
-        <a className="ant-dropdown-link" onClick={(e) => e.preventDefault()}>
-          Navigation <DownOutlined />
-        </a>
-      </Button>
-    </Dropdown>
+   <>
+   {menu}
+   </>
   );
 }

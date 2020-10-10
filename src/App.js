@@ -10,19 +10,32 @@ import DaysBoard from "./containers/DaysBoard";
 import Home from "./components/Home";
 import About from "./components/About";
 import { Space } from 'antd';
+import { Layout} from 'antd';
+import {FireTwoTone } from "@ant-design/icons"
+
+const { Header, Content, Footer } = Layout;
 
 
 function App() {
   return (
     <Router>
-    <div className ="App">
-      <Space direction="vertical">
-      <NavBar/>
-      <Route exact path="/" component={Home} />
-      <Route path ="/board" component={DaysBoard}/>
-      <Route path= "/about" component={About}/>
-      </Space>
-    </div>
+    <Layout className="layout">
+      <Header>
+      <div className="logo" />
+        
+        <NavBar/>
+      </Header>
+      <Content style={{ padding: '0 50px' }}>
+      <div className="site-layout-content">
+        <Route exact path="/" component={Home} />
+        <Route path ="/board" component={DaysBoard}/>
+        <Route path= "/about" component={About}/>
+      </div>
+    </Content>
+    <Footer style={{ textAlign: 'center' }}>
+      Thicc Design ©2020 Created by ThiccBois
+    </Footer>
+    </Layout>
     </Router>
   );
 }
