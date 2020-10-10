@@ -1,15 +1,19 @@
 import React from "react";
+import { Typography, Collapse, Space } from "antd";
+
+const { Title, Text } = Typography;
+const { Panel } = Collapse;
 
 export default function Section({ sections }) {
   return (
-    <ol>
-      <h4>Sections</h4>
+    <>
       {sections.reverse().map((section) => (
-        <li>
-          <h4>{section.sectionName}</h4>
-          <p>{section.sectionDescription}</p>
-        </li>
+        <Collapse>
+          <Panel style={{ margin: " 5px 0" }} header={section.sectionName}>
+            <Text>{section.sectionDescription}</Text>
+          </Panel>
+        </Collapse>
       ))}
-    </ol>
+    </>
   );
 }

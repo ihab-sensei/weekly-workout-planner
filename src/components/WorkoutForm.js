@@ -24,7 +24,7 @@ export default function WorkoutForm({
         placeholder="Enter workout name"
         prefix={<FireOutlined className="site-form-item-icon" />}
         suffix={
-          <Tooltip title="e.g:Leg Day...">
+          <Tooltip title="e.g Leg Day...">
             <InfoCircleOutlined style={{ color: "rgba(0,0,0,.45)" }} />
           </Tooltip>
         }

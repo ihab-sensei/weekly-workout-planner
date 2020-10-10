@@ -45,17 +45,6 @@ export default function Day({ name }) {
     });
     handleOk();
   };
-  const addSections = (e, workoutName, sectionName, sectionDescription) => {
-    e.preventDefault();
-    db.collection(name)
-      .doc(workoutName)
-      .collection("Sections")
-      .doc(sectionName)
-      .set({
-        sectionName: sectionName,
-        sectionDescription: sectionDescription
-      });
-  };
 
   const fetchData = async () => {
     const res = await db.collection(name).get();
@@ -85,7 +74,6 @@ export default function Day({ name }) {
         <Workout
           setUpdateCounter={setUpdateCounter}
           name={name}
-          addSections={addSections}
           workout={workout}
         />
       ))}

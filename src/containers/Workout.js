@@ -1,24 +1,13 @@
 import React, { useEffect, useState } from "react";
-import SectionForm from "../components/SectionForm";
 import db from "../firebaseConfig";
-import Section from "../components/Section";
+import Sections from "./Sections";
 import EditWorkoutForm from "../components/EditWorkoutForm";
 import { Tooltip, Typography, Button, Modal } from "antd";
 import { EditOutlined, DeleteOutlined } from "@ant-design/icons";
 
 const { Title } = Typography;
-export default function Workout({
-  name,
-  workout,
-  addSections,
-  setUpdateCounter
-}) {
+export default function Workout({ name, workout, setUpdateCounter }) {
   const [modalState, setModalState] = useState({ visible: false });
-
-  const [sectionFormState, setSectionFormState] = useState({
-    sectionName: "",
-    sectionDescription: ""
-  });
   const [sections, setSections] = useState([]);
   const [updateWorkoutCounter, setUpdateWorkoutCounter] = useState({
     counter: 0
@@ -106,14 +95,11 @@ export default function Workout({
           />
         </Tooltip>
       </div>
-
-      <Section sections={sections} />
-      <SectionForm
+      <Sections
+        name={name}
+        sections={sections}
         setUpdateWorkoutCounter={setUpdateWorkoutCounter}
-        sectionFormState={sectionFormState}
-        setSectionFormState={setSectionFormState}
-        addSections={addSections}
-        workoutName={workout.workoutName}
+        workout={workout}
       />
 
       <Modal
