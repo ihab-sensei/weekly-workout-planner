@@ -67,7 +67,14 @@ export default function Sections({
           </Button>
         </Tooltip>
       </div>
-      <Section sections={sections} />
+      {sections.reverse().map((section) => (
+        <Section
+          name={name}
+          workout={workout}
+          setUpdateWorkoutCounter={setUpdateWorkoutCounter}
+          sections={section}
+        />
+      ))}
 
       <Modal
         title="Add a section of the workout"

@@ -5,17 +5,15 @@ import { DownOutlined } from "@ant-design/icons";
 
 export default function Navbar() {
   const menu = (
-    <Menu theme="dark" mode="horizontal" defaultSelectedKeys={["2"]}>
+    <Menu theme="dark" mode="horizontal">
       <Menu.Item key="1">
-        <Link  to="/" exact>
+        <Link to="/" exact>
           Home
         </Link>
       </Menu.Item>
 
       <Menu.Item key="2">
-        <Link  to="/board">
-          Board
-        </Link>
+        <Link to="/board">Board</Link>
       </Menu.Item>
 
       <Menu.Item key="3">
@@ -24,9 +22,5 @@ export default function Navbar() {
     </Menu>
   );
 
-  return (
-   <>
-   {menu}
-   </>
-  );
+  return <>{menu}</>;
 }
