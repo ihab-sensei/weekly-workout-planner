@@ -9,11 +9,12 @@ import { PlusOutlined, DeleteOutlined } from "@ant-design/icons";
 const { Title } = Typography;
 
 export default function Sections({
-  sections,
+  //sections,
   workout,
   setUpdateWorkoutCounter,
   name
 }) {
+  const [sections, setSections] = useState([]);
   const [sectionFormState, setSectionFormState] = useState({
     sectionName: "",
     sectionDescription: ""
@@ -46,12 +47,22 @@ export default function Sections({
       .set({
         sectionName: sectionFormState.sectionName,
         sectionDescription: sectionFormState.sectionDescription
-      });
+      });/*
     setUpdateWorkoutCounter((previousState) => {
       return { counter: previousState.counter + 1 };
-    });
+    });*/
     handleOk();
   };
+  useEffect(() => {
+    //fetchSections();
+    const unsubscribe = db.collection(name).doc(workout.workoutName)
+      .collection("Sections").onSnapshot(snapshot => {
+        const dataArr = [];
+        snapshot.forEach(doc => dataArr.push({...doc.data()}))
+        setSections(dataArr)
+      })
+    return unsubscribe
+  }, []);
 
   return (
     <>

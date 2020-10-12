@@ -40,9 +40,10 @@ export default function Day({ name }) {
     db.collection(name)
       .doc(workoutFormState[name])
       .set({ workoutName: workoutFormState[name] });
+      /*
     setUpdateCounter((previousState) => {
       return { counter: previousState.counter + 1 };
-    });
+    });*/
     handleOk();
   };
 
@@ -54,8 +55,14 @@ export default function Day({ name }) {
   };
 
   useEffect(() => {
-    fetchData();
-  }, [updateCounter]);
+    //fetchData();
+    const unsubscribe = db.collection(name).onSnapshot(snapshot => {
+        const dataArr = [];
+        snapshot.forEach(doc => dataArr.push({...doc.data()}))
+        setDay(dataArr)
+      })
+    return unsubscribe
+  }, []);
 
   return (
     <div className="weekDay">

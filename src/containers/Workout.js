@@ -8,33 +8,42 @@ import { EditOutlined, DeleteOutlined } from "@ant-design/icons";
 const { Title } = Typography;
 export default function Workout({ name, workout, setUpdateCounter }) {
   const [modalState, setModalState] = useState({ visible: false });
-  const [sections, setSections] = useState([]);
+  //const [sections, setSections] = useState([]);
   const [updateWorkoutCounter, setUpdateWorkoutCounter] = useState({
     counter: 0
   });
   const [editWorkoutFormState, setEditWorkoutFormState] = useState("");
-  const fetchSections = async (workoutName) => {
+  const fetchSections = async () => {
     const res = await db
       .collection(name)
-      .doc(workoutName)
+      .doc(workout.workoutName)
       .collection("Sections")
       .get();
     const datas = res.docs.map((data) => data.data());
     console.log(datas);
-    setSections(datas);
+    //setSections(datas);
   };
+  /*
   useEffect(() => {
-    fetchSections(workout.workoutName);
-  }, [updateWorkoutCounter]);
+    //fetchSections();
+    const unsubscribe = db.collection(name).doc(workout.workoutName)
+      .collection("Sections").onSnapshot(snapshot => {
+        const dataArr = [];
+        snapshot.forEach(doc => dataArr.push({...doc.data()}))
+        setSections(dataArr)
+      })
+    return unsubscribe
+  }, []);*/
 
   const deleteWorkout = () => {
     db.collection(name)
       .doc(workout.workoutName)
       .delete()
       .then(() => {
+        /*
         setUpdateCounter((previousState) => {
           return { counter: previousState.counter + 1 };
-        });
+        });*/
         console.log("Document successfully deleted!");
       })
       .catch((err) => {
@@ -42,15 +51,16 @@ export default function Workout({ name, workout, setUpdateCounter }) {
       });
   };
 
-  const editWorkout = (e) => {
+  const editWorkout = (e) => { 
     e.preventDefault();
-    deleteWorkout();
+    deleteWorkout(); // this does not delete the inner collection.
     db.collection(name)
       .doc(editWorkoutFormState)
       .set({ workoutName: editWorkoutFormState });
+      /*
     setUpdateCounter((previousState) => {
       return { counter: previousState.counter + 1 };
-    });
+    });*/
     handleOk();
   };
   const showModal = () => {
@@ -97,7 +107,7 @@ export default function Workout({ name, workout, setUpdateCounter }) {
       </div>
       <Sections
         name={name}
-        sections={sections}
+       
         setUpdateWorkoutCounter={setUpdateWorkoutCounter}
         workout={workout}
       />

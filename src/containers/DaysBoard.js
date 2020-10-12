@@ -24,9 +24,9 @@ export default function DaysBoard() {
             md={8}
             lg={6}
             xl={3}
-            style={{ marginLeft: "1.3rem" }}
+            style={{ margin: "0 0.5rem" }}
           >
-            <Card hoverable title={day} bordered style={{ width: "12rem" }}>
+            <Card hoverable title={day} bordered style={{ width: "10rem" }}>
               <Day key={day} name={day} />
             </Card>
           </Col>
