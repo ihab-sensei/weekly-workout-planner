@@ -8,7 +8,6 @@ import { PlusOutlined } from "@ant-design/icons";
 export default function Day({ name }) {
   const [modalState, setModalState] = useState({ visible: false });
   const [day, setDay] = useState([]);
-  const [updateCounter, setUpdateCounter] = useState({ counter: 0 });
   const [workoutFormState, setWorkoutFormState] = useState({
     Monday: "",
     Tuesday: "",
@@ -40,10 +39,7 @@ export default function Day({ name }) {
     db.collection(name)
       .doc(workoutFormState[name])
       .set({ workoutName: workoutFormState[name] });
-      /*
-    setUpdateCounter((previousState) => {
-      return { counter: previousState.counter + 1 };
-    });*/
+
     handleOk();
   };
 
@@ -56,12 +52,12 @@ export default function Day({ name }) {
 
   useEffect(() => {
     //fetchData();
-    const unsubscribe = db.collection(name).onSnapshot(snapshot => {
-        const dataArr = [];
-        snapshot.forEach(doc => dataArr.push({...doc.data()}))
-        setDay(dataArr)
-      })
-    return unsubscribe
+    const unsubscribe = db.collection(name).onSnapshot((snapshot) => {
+      const dataArr = [];
+      snapshot.forEach((doc) => dataArr.push({ ...doc.data() }));
+      setDay(dataArr);
+    });
+    return unsubscribe;
   }, []);
 
   return (
@@ -78,11 +74,7 @@ export default function Day({ name }) {
       </Tooltip>
 
       {day.map((workout) => (
-        <Workout
-          setUpdateCounter={setUpdateCounter}
-          name={name}
-          workout={workout}
-        />
+        <Workout name={name} workout={workout} />
       ))}
 
       <Modal

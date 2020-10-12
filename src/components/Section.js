@@ -14,12 +14,7 @@ import { EditOutlined, DeleteOutlined, MoreOutlined } from "@ant-design/icons";
 const { Title, Text } = Typography;
 const { Panel } = Collapse;
 
-export default function Section({
-  sections,
-  name,
-  workout,
-  setUpdateWorkoutCounter
-}) {
+export default function Section({ sections, name, workout }) {
   const deleteSection = () => {
     db.collection(name)
       .doc(workout.workoutName)
@@ -27,10 +22,6 @@ export default function Section({
       .doc(sections.sectionName)
       .delete()
       .then(() => {
-        /*
-        setUpdateWorkoutCounter((previousState) => {
-          return { counter: previousState.counter + 1 };
-        });*/
         console.log("Document successfully deleted!");
       })
       .catch((err) => {
@@ -56,19 +47,19 @@ export default function Section({
 
   const menu = (
     <Menu>
-      <Menu.Item key="1" >
-        {deleteExtraButton()}
-      </Menu.Item>
-      <Menu.Item key="2" >
-        Edit
-      </Menu.Item>
+      <Menu.Item key="1">{deleteExtraButton()}</Menu.Item>
+      <Menu.Item key="2">Edit</Menu.Item>
     </Menu>
   );
 
   const menuExtraButton = () => {
-    return <Tooltip title="More" placement="top"><Dropdown overlay={menu}>
-      <MoreOutlined/>
-    </Dropdown> </Tooltip>;
+    return (
+      <Tooltip title="More" placement="top">
+        <Dropdown overlay={menu}>
+          <MoreOutlined />
+        </Dropdown>{" "}
+      </Tooltip>
+    );
   };
 
   return (

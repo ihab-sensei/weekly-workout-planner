@@ -6,12 +6,8 @@ import { Tooltip, Typography, Button, Modal } from "antd";
 import { EditOutlined, DeleteOutlined } from "@ant-design/icons";
 
 const { Title } = Typography;
-export default function Workout({ name, workout, setUpdateCounter }) {
+export default function Workout({ name, workout }) {
   const [modalState, setModalState] = useState({ visible: false });
-  //const [sections, setSections] = useState([]);
-  const [updateWorkoutCounter, setUpdateWorkoutCounter] = useState({
-    counter: 0
-  });
   const [editWorkoutFormState, setEditWorkoutFormState] = useState("");
   const fetchSections = async () => {
     const res = await db
@@ -23,27 +19,27 @@ export default function Workout({ name, workout, setUpdateCounter }) {
     console.log(datas);
     //setSections(datas);
   };
-  /*
-  useEffect(() => {
-    //fetchSections();
-    const unsubscribe = db.collection(name).doc(workout.workoutName)
-      .collection("Sections").onSnapshot(snapshot => {
-        const dataArr = [];
-        snapshot.forEach(doc => dataArr.push({...doc.data()}))
-        setSections(dataArr)
-      })
-    return unsubscribe
-  }, []);*/
 
-  const deleteWorkout = () => {
+  const deleteWorkout = async () => {
+    const res = await db
+      .collection(name)
+      .doc(workout.workoutName)
+      .collection("Sections")
+      .get();
+    const datas = res.docs.map((data) => data.data());
+    datas.forEach((doc) => {
+      console.log(doc.sectionName);
+      db.collection(name)
+        .doc(workout.workoutName)
+        .collection("Sections")
+        .doc(doc.sectionName)
+        .delete();
+    });
+    console.log(datas);
     db.collection(name)
       .doc(workout.workoutName)
       .delete()
       .then(() => {
-        /*
-        setUpdateCounter((previousState) => {
-          return { counter: previousState.counter + 1 };
-        });*/
         console.log("Document successfully deleted!");
       })
       .catch((err) => {
@@ -51,16 +47,13 @@ export default function Workout({ name, workout, setUpdateCounter }) {
       });
   };
 
-  const editWorkout = (e) => { 
+  const editWorkout = (e) => {
     e.preventDefault();
     deleteWorkout(); // this does not delete the inner collection.
     db.collection(name)
       .doc(editWorkoutFormState)
       .set({ workoutName: editWorkoutFormState });
-      /*
-    setUpdateCounter((previousState) => {
-      return { counter: previousState.counter + 1 };
-    });*/
+
     handleOk();
   };
   const showModal = () => {
@@ -105,12 +98,7 @@ export default function Workout({ name, workout, setUpdateCounter }) {
           />
         </Tooltip>
       </div>
-      <Sections
-        name={name}
-       
-        setUpdateWorkoutCounter={setUpdateWorkoutCounter}
-        workout={workout}
-      />
+      <Sections name={name} workout={workout} />
 
       <Modal
         title="Edit the name of the workout"

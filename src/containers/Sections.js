@@ -11,7 +11,6 @@ const { Title } = Typography;
 export default function Sections({
   //sections,
   workout,
-  setUpdateWorkoutCounter,
   name
 }) {
   const [sections, setSections] = useState([]);
@@ -47,21 +46,21 @@ export default function Sections({
       .set({
         sectionName: sectionFormState.sectionName,
         sectionDescription: sectionFormState.sectionDescription
-      });/*
-    setUpdateWorkoutCounter((previousState) => {
-      return { counter: previousState.counter + 1 };
-    });*/
+      });
     handleOk();
   };
   useEffect(() => {
     //fetchSections();
-    const unsubscribe = db.collection(name).doc(workout.workoutName)
-      .collection("Sections").onSnapshot(snapshot => {
+    const unsubscribe = db
+      .collection(name)
+      .doc(workout.workoutName)
+      .collection("Sections")
+      .onSnapshot((snapshot) => {
         const dataArr = [];
-        snapshot.forEach(doc => dataArr.push({...doc.data()}))
-        setSections(dataArr)
-      })
-    return unsubscribe
+        snapshot.forEach((doc) => dataArr.push({ ...doc.data() }));
+        setSections(dataArr);
+      });
+    return unsubscribe;
   }, []);
 
   return (
@@ -79,12 +78,7 @@ export default function Sections({
         </Tooltip>
       </div>
       {sections.reverse().map((section) => (
-        <Section
-          name={name}
-          workout={workout}
-          setUpdateWorkoutCounter={setUpdateWorkoutCounter}
-          sections={section}
-        />
+        <Section name={name} workout={workout} sections={section} />
       ))}
 
       <Modal
@@ -94,7 +88,6 @@ export default function Sections({
         onCancel={handleCancel}
       >
         <SectionForm
-          setUpdateWorkoutCounter={setUpdateWorkoutCounter}
           sectionFormState={sectionFormState}
           setSectionFormState={setSectionFormState}
         />
