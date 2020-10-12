@@ -27,9 +27,10 @@ export default function Section({
       .doc(sections.sectionName)
       .delete()
       .then(() => {
+        /*
         setUpdateWorkoutCounter((previousState) => {
           return { counter: previousState.counter + 1 };
-        });
+        });*/
         console.log("Document successfully deleted!");
       })
       .catch((err) => {

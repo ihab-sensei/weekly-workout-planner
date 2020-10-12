@@ -8,7 +8,7 @@ export default function About() {
     <Space direction="vertical">
       <Title>About Weekly-Workout-Planner</Title>
       <Text>
-        Sup' Bro! You want to learn more about this website! Cool! <br/>
+        Sup' Bro! You want to learn more about this website! Cool! <br/> <br/>
         This website is designed by ThiccBois to help plan your workouts bruh;
         You can add the workouts you want to do and you can add the section names too.
         Sick, right ?! Anyway, the dudes who designed this website care about ease of
