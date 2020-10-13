@@ -11,53 +11,52 @@ const { Title } = Typography;
 export default function Sections({
   //sections,
   workout,
-  name
+  name,
 }) {
   const [sections, setSections] = useState([]);
   const [sectionFormState, setSectionFormState] = useState({
     sectionName: "",
-    sectionDescription: ""
+    sectionDescription: "",
   });
   const [sectionModalState, setSectionModalState] = useState({
-    visible: false
+    visible: false,
   });
 
   const showModal = () => {
     setSectionModalState({
-      visible: true
+      visible: true,
     });
   };
   const handleOk = () => {
     setSectionModalState({
-      visible: false
+      visible: false,
     });
   };
 
   const handleCancel = () => {
     setSectionModalState({
-      visible: false
+      visible: false,
     });
   };
   const addSections = () => {
-    db.collection(name)
-      .doc(workout.workoutName)
-      .collection("Sections")
-      .doc(sectionFormState.sectionName)
-      .set({
-        sectionName: sectionFormState.sectionName,
-        sectionDescription: sectionFormState.sectionDescription
-      });
+    db.collection(name).doc(workout.docId).collection("Sections").add({
+      sectionName: sectionFormState.sectionName,
+      sectionDescription: sectionFormState.sectionDescription,
+    });
     handleOk();
   };
   useEffect(() => {
     //fetchSections();
     const unsubscribe = db
       .collection(name)
-      .doc(workout.workoutName)
+      .doc(workout.docId)
       .collection("Sections")
       .onSnapshot((snapshot) => {
+        console.log("snap", snapshot);
         const dataArr = [];
-        snapshot.forEach((doc) => dataArr.push({ ...doc.data() }));
+        snapshot.forEach((doc) =>
+          dataArr.push({ ...doc.data(), docId: doc.id })
+        );
         setSections(dataArr);
       });
     return unsubscribe;
@@ -78,7 +77,12 @@ export default function Sections({
         </Tooltip>
       </div>
       {sections.reverse().map((section) => (
-        <Section name={name} workout={workout} sections={section} />
+        <Section
+          key={sections.docId}
+          name={name}
+          workout={workout}
+          sections={section}
+        />
       ))}
 
       <Modal

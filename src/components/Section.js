@@ -6,7 +6,7 @@ import {
   Collapse,
   Space,
   Button,
-  Tooltip
+  Tooltip,
 } from "antd";
 import db from "../firebaseConfig";
 import { EditOutlined, DeleteOutlined, MoreOutlined } from "@ant-design/icons";
@@ -16,10 +16,11 @@ const { Panel } = Collapse;
 
 export default function Section({ sections, name, workout }) {
   const deleteSection = () => {
+    console.log(sections);
     db.collection(name)
-      .doc(workout.workoutName)
+      .doc(workout.docId)
       .collection("Sections")
-      .doc(sections.sectionName)
+      .doc(sections.docId)
       .delete()
       .then(() => {
         console.log("Document successfully deleted!");
@@ -54,11 +55,9 @@ export default function Section({ sections, name, workout }) {
 
   const menuExtraButton = () => {
     return (
-      <Tooltip title="More" placement="top">
-        <Dropdown overlay={menu}>
-          <MoreOutlined />
-        </Dropdown>{" "}
-      </Tooltip>
+      <Dropdown overlay={menu}>
+        <MoreOutlined />
+      </Dropdown>
     );
   };
 

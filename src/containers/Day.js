@@ -15,30 +15,28 @@ export default function Day({ name }) {
     Thursday: "",
     Friday: "",
     Saturday: "",
-    Sunday: ""
+    Sunday: "",
   });
   const showModal = () => {
     setModalState({
-      visible: true
+      visible: true,
     });
   };
 
   const handleOk = () => {
     setModalState({
-      visible: false
+      visible: false,
     });
   };
 
   const handleCancel = () => {
     setModalState({
-      visible: false
+      visible: false,
     });
   };
 
   const addWorkout = () => {
-    db.collection(name)
-      .doc(workoutFormState[name])
-      .set({ workoutName: workoutFormState[name] });
+    db.collection(name).add({ workoutName: workoutFormState[name] });
 
     handleOk();
   };
@@ -54,7 +52,10 @@ export default function Day({ name }) {
     //fetchData();
     const unsubscribe = db.collection(name).onSnapshot((snapshot) => {
       const dataArr = [];
-      snapshot.forEach((doc) => dataArr.push({ ...doc.data() }));
+      snapshot.forEach((doc) => {
+        console.log(doc.id);
+        dataArr.push({ ...doc.data(), docId: doc.id });
+      });
       setDay(dataArr);
     });
     return unsubscribe;
@@ -74,7 +75,7 @@ export default function Day({ name }) {
       </Tooltip>
 
       {day.map((workout) => (
-        <Workout name={name} workout={workout} />
+        <Workout key={workout.docId} name={name} workout={workout} />
       ))}
 
       <Modal

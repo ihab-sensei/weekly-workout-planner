@@ -9,35 +9,36 @@ const { Title } = Typography;
 export default function Workout({ name, workout }) {
   const [modalState, setModalState] = useState({ visible: false });
   const [editWorkoutFormState, setEditWorkoutFormState] = useState("");
-  const fetchSections = async () => {
-    const res = await db
-      .collection(name)
-      .doc(workout.workoutName)
-      .collection("Sections")
-      .get();
-    const datas = res.docs.map((data) => data.data());
-    console.log(datas);
-    //setSections(datas);
-  };
+  // const fetchSections = async () => {
+  //   const res = await db
+  //     .collection(name)
+  //     .doc(workout.workoutName)
+  //     .collection("Sections")
+  //     .get();
+  //   const datas = res.docs.map((data) => data.data());
+  //   console.log(datas);
+  //   //setSections(datas);
+  // };
 
   const deleteWorkout = async () => {
     const res = await db
       .collection(name)
-      .doc(workout.workoutName)
+      .doc(workout.docId)
       .collection("Sections")
       .get();
-    const datas = res.docs.map((data) => data.data());
+    const datas = res.docs.map((data) => data.id);
+    console.log(datas);
     datas.forEach((doc) => {
-      console.log(doc.sectionName);
+      console.log(doc);
       db.collection(name)
-        .doc(workout.workoutName)
+        .doc(workout.docId)
         .collection("Sections")
-        .doc(doc.sectionName)
+        .doc(doc)
         .delete();
     });
     console.log(datas);
     db.collection(name)
-      .doc(workout.workoutName)
+      .doc(workout.docId)
       .delete()
       .then(() => {
         console.log("Document successfully deleted!");
@@ -49,28 +50,28 @@ export default function Workout({ name, workout }) {
 
   const editWorkout = (e) => {
     e.preventDefault();
-    deleteWorkout(); // this does not delete the inner collection.
+    //deleteWorkout(); // this does not delete the inner collection.
     db.collection(name)
-      .doc(editWorkoutFormState)
-      .set({ workoutName: editWorkoutFormState });
+      .doc(workout.docId)
+      .update({ workoutName: editWorkoutFormState });
 
     handleOk();
   };
   const showModal = () => {
     setModalState({
-      visible: true
+      visible: true,
     });
   };
 
   const handleOk = () => {
     setModalState({
-      visible: false
+      visible: false,
     });
   };
 
   const handleCancel = () => {
     setModalState({
-      visible: false
+      visible: false,
     });
   };
 
