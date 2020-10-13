@@ -1,8 +1,8 @@
 import React from "react";
-import { Input, Tooltip, TextArea } from "antd";
+import { Input, Tooltip } from "antd";
 import { InfoCircleOutlined, FireOutlined } from "@ant-design/icons";
 
-export default function EditSectionForm({
+function EditSectionForm({
   sectionName,
   sectionDescription,
   setEditSectionFormState,
@@ -30,7 +30,7 @@ export default function EditSectionForm({
           </Tooltip>
         }
       />
-      <TextArea // bug on render
+      <Input.TextArea // bug on render
         placeholder="Change section description..."
         id={sectionDescription}
         name="sectionDescription"
@@ -40,3 +40,5 @@ export default function EditSectionForm({
     </div>
   );
 }
+
+export default EditSectionForm;
