@@ -4,7 +4,7 @@ import { Menu } from "antd";
 
 export default function Navbar() {
   const menu = (
-    <Menu theme="dark" mode="horizontal">
+    <Menu theme="dark" mode="horizontal" defaultSelectedKeys={['1']}>
       <Menu.Item key="1">
         <Link to="/" exact>
           Home

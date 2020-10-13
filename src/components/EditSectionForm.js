@@ -11,7 +11,7 @@ function EditSectionForm({
   const handleChange = (e) => {
     setEditSectionFormState({
       ...editSectionFormState,
-      [e.target.id]: e.target.value
+      [e.target.name]: e.target.value
     });
   };
   return (
