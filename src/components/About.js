@@ -1,11 +1,31 @@
 import React from "react";
-import { Typography, Space } from "antd";
+import { Typography, Space, Image } from "antd";
+import {FALLBACK_IMG, SPONGEBOB_ARM} from "../Images"
 
 const { Title, Text } = Typography;
 
 export default function About() {
+
+  const flex = {
+    display: "flex",
+    
+  }
+
+  const renderImg = () => {
+    return(
+      <Image style={{margin:"1rem"}}
+      width={300}
+      height={200}
+      src={SPONGEBOB_ARM}
+      fallback={FALLBACK_IMG}
+    />
+
+    )
+  }
   return (
+    <div style={flex}>
     <Space direction="vertical">
+      <div>
       <Title>About Weekly-Workout-Planner</Title>
       <Text>
         Sup' Bro! You want to learn more about this website! Cool! <br/> <br/>
@@ -15,6 +35,11 @@ export default function About() {
         use, so you can easily use it (duh!?), without training. Keep on rockin' that tank top,
         No pain, no gain etc. !
       </Text>
+      </div>
     </Space>
+    <div>
+      {renderImg()}
+    </div>
+    </div>
   );
 }

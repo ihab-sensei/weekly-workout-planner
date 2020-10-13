@@ -1,17 +1,43 @@
 import React from "react";
-import { Typography } from "antd";
+import { Typography, Image } from "antd";
+import {FALLBACK_IMG, SPONGEBOB_MEME} from "../Images"
 
 const { Title, Text } = Typography;
 export default function Home() {
+
+  const flex = {
+    display: "flex",
+    
+  }
+
+  const renderImg = () => {
+    return(
+      <Image style={{margin:"1rem"}}
+      width={300}
+      height={200}
+      src={SPONGEBOB_MEME}
+      fallback={FALLBACK_IMG}
+    />
+
+    )
+  }
+
   return (
-    <div>
-      <Title style={{textAlign:"center"}}>Welcome To Weekly Workout Planner</Title>
+    <div style={flex}>
+      <div>
+      <Title >Welcome To Weekly Workout Planner</Title>
       <Title type="secondary" level={2}>Do You Even Lift Bro?! </Title>
-      <Text>Sup, bro? Lifting the heavy weights huh? Good for you. What's that? Are you still using pen and paper to plan your workouts brah? 
-        <br/>
+     
+      <Text>Sup, bro? Lifting the heavy weights huh? Good for you. What's that? Are you still using pen and paper to plan your workouts brah?
         <br/>
         Well, you are in luck because the WWP(WeeklyWorkoutPlanner) is here! Now, ditch that old book and go to board tab!
       </Text>
+      </div>
+      
+      <div>
+        {renderImg()}
+      </div>
+      
     </div>
   );
 }
