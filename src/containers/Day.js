@@ -15,23 +15,23 @@ export default function Day({ name }) {
     Thursday: "",
     Friday: "",
     Saturday: "",
-    Sunday: "",
+    Sunday: ""
   });
   const showModal = () => {
     setModalState({
-      visible: true,
+      visible: true
     });
   };
 
   const handleOk = () => {
     setModalState({
-      visible: false,
+      visible: false
     });
   };
 
   const handleCancel = () => {
     setModalState({
-      visible: false,
+      visible: false
     });
   };
 
@@ -41,15 +41,7 @@ export default function Day({ name }) {
     handleOk();
   };
 
-  const fetchData = async () => {
-    const res = await db.collection(name).get();
-    const datas = res.docs.map((data) => data.data());
-    console.log(datas);
-    setDay(datas);
-  };
-
   useEffect(() => {
-    //fetchData();
     const unsubscribe = db.collection(name).onSnapshot((snapshot) => {
       const dataArr = [];
       snapshot.forEach((doc) => {

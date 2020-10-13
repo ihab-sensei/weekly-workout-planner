@@ -2,51 +2,43 @@ import React, { useEffect, useState } from "react";
 import SectionForm from "../components/SectionForm";
 import db from "../firebaseConfig";
 import Section from "../components/Section";
-import EditWorkoutForm from "../components/EditWorkoutForm";
-import { Tooltip, Typography, Button, Modal, Space } from "antd";
-import { PlusOutlined, DeleteOutlined } from "@ant-design/icons";
+import { Tooltip, Button, Modal } from "antd";
+import { PlusOutlined } from "@ant-design/icons";
 
-const { Title } = Typography;
-
-export default function Sections({
-  //sections,
-  workout,
-  name,
-}) {
+export default function Sections({ workout, name }) {
   const [sections, setSections] = useState([]);
   const [sectionFormState, setSectionFormState] = useState({
     sectionName: "",
-    sectionDescription: "",
+    sectionDescription: ""
   });
   const [sectionModalState, setSectionModalState] = useState({
-    visible: false,
+    visible: false
   });
 
   const showModal = () => {
     setSectionModalState({
-      visible: true,
+      visible: true
     });
   };
   const handleOk = () => {
     setSectionModalState({
-      visible: false,
+      visible: false
     });
   };
 
   const handleCancel = () => {
     setSectionModalState({
-      visible: false,
+      visible: false
     });
   };
   const addSections = () => {
     db.collection(name).doc(workout.docId).collection("Sections").add({
       sectionName: sectionFormState.sectionName,
-      sectionDescription: sectionFormState.sectionDescription,
+      sectionDescription: sectionFormState.sectionDescription
     });
     handleOk();
   };
   useEffect(() => {
-    //fetchSections();
     const unsubscribe = db
       .collection(name)
       .doc(workout.docId)

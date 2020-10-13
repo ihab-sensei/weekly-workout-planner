@@ -1,20 +1,26 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   Menu,
   Dropdown,
   Typography,
   Collapse,
-  Space,
   Button,
   Tooltip,
+  Modal
 } from "antd";
 import db from "../firebaseConfig";
-import { EditOutlined, DeleteOutlined, MoreOutlined } from "@ant-design/icons";
-
-const { Title, Text } = Typography;
+import { DeleteOutlined, MoreOutlined, EditOutlined } from "@ant-design/icons";
+import EditSectionForm from "./EditSectionForm";
+const { Text } = Typography;
 const { Panel } = Collapse;
 
 export default function Section({ sections, name, workout }) {
+  const [modalState, setModalState] = useState({ visible: false });
+  const [editSectionFormState, setEditSectionFormState] = useState({
+    sectionName: "",
+    sectionDescription: ""
+  });
+
   const deleteSection = () => {
     console.log(sections);
     db.collection(name)
@@ -28,6 +34,17 @@ export default function Section({ sections, name, workout }) {
       .catch((err) => {
         console.error("Error removing document: ", err);
       });
+  };
+  const editSection = () => {
+    db.collection(name)
+      .doc(workout.docId)
+      .collection("Sections")
+      .doc(sections.docId)
+      .update({
+        sectionName: editSectionFormState.sectionName,
+        sectionDescription: editSectionFormState.sectionDescription
+      });
+    handleOk();
   };
   const deleteExtraButton = () => {
     return (
@@ -45,11 +62,44 @@ export default function Section({ sections, name, workout }) {
       </Tooltip>
     );
   };
+  const showModal = () => {
+    setModalState({
+      visible: true
+    });
+  };
+
+  const handleOk = () => {
+    setModalState({
+      visible: false
+    });
+  };
+
+  const handleCancel = () => {
+    setModalState({
+      visible: false
+    });
+  };
+
+  const editExtraButton = () => {
+    return (
+      <Tooltip title="Edit">
+        <Button
+          onClick={(e) => {
+            showModal();
+            e.stopPropagation();
+          }}
+          type="text"
+          shape="circle"
+          icon={<EditOutlined />}
+        ></Button>
+      </Tooltip>
+    );
+  };
 
   const menu = (
     <Menu>
       <Menu.Item key="1">{deleteExtraButton()}</Menu.Item>
-      <Menu.Item key="2">Edit</Menu.Item>
+      <Menu.Item key="2">{editExtraButton()}</Menu.Item>
     </Menu>
   );
 
@@ -72,6 +122,20 @@ export default function Section({ sections, name, workout }) {
           <Text>{sections.sectionDescription}</Text>
         </Panel>
       </Collapse>
+
+      <Modal
+        title="Edit the name of the section"
+        visible={modalState.visible}
+        onOk={editSection}
+        onCancel={handleCancel}
+      >
+        <EditSectionForm
+          sectionName={sections.sectionName}
+          sectionDescription={sections.sectionDescription}
+          setEditSectionFormState={setEditSectionFormState}
+          editSectionFormState={editSectionFormState}
+        />
+      </Modal>
     </>
   );
 }

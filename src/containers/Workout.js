@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import db from "../firebaseConfig";
 import Sections from "./Sections";
 import EditWorkoutForm from "../components/EditWorkoutForm";
@@ -9,16 +9,6 @@ const { Title } = Typography;
 export default function Workout({ name, workout }) {
   const [modalState, setModalState] = useState({ visible: false });
   const [editWorkoutFormState, setEditWorkoutFormState] = useState("");
-  // const fetchSections = async () => {
-  //   const res = await db
-  //     .collection(name)
-  //     .doc(workout.workoutName)
-  //     .collection("Sections")
-  //     .get();
-  //   const datas = res.docs.map((data) => data.data());
-  //   console.log(datas);
-  //   //setSections(datas);
-  // };
 
   const deleteWorkout = async () => {
     const res = await db
@@ -48,9 +38,7 @@ export default function Workout({ name, workout }) {
       });
   };
 
-  const editWorkout = (e) => {
-    e.preventDefault();
-    //deleteWorkout(); // this does not delete the inner collection.
+  const editWorkout = () => {
     db.collection(name)
       .doc(workout.docId)
       .update({ workoutName: editWorkoutFormState });
@@ -59,19 +47,19 @@ export default function Workout({ name, workout }) {
   };
   const showModal = () => {
     setModalState({
-      visible: true,
+      visible: true
     });
   };
 
   const handleOk = () => {
     setModalState({
-      visible: false,
+      visible: false
     });
   };
 
   const handleCancel = () => {
     setModalState({
-      visible: false,
+      visible: false
     });
   };
 
