@@ -8,7 +8,9 @@ import { EditOutlined, DeleteOutlined } from "@ant-design/icons";
 const { Title } = Typography;
 export default function Workout({ name, workout }) {
   const [modalState, setModalState] = useState({ visible: false });
-  const [editWorkoutFormState, setEditWorkoutFormState] = useState("");
+  const [editWorkoutFormState, setEditWorkoutFormState] = useState(
+    workout.workoutName
+  );
 
   const deleteWorkout = async () => {
     const ref = db.collection(name).doc(workout.docId).collection("Sections");

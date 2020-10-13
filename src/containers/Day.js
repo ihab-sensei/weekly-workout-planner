@@ -27,6 +27,11 @@ export default function Day({ name }) {
     setModalState({
       visible: false
     });
+    /*
+    setWorkoutFormState({
+      ...workoutFormState,
+      [name]: ""
+    });*/
   };
 
   const handleCancel = () => {

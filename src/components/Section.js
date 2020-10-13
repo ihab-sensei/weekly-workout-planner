@@ -17,8 +17,8 @@ const { Panel } = Collapse;
 export default function Section({ sections, name, workout }) {
   const [modalState, setModalState] = useState({ visible: false });
   const [editSectionFormState, setEditSectionFormState] = useState({
-    sectionName: "",
-    sectionDescription: ""
+    sectionName: sections.sectionName,
+    sectionDescription: sections.sectionDescription
   });
 
   const deleteSection = () => {
