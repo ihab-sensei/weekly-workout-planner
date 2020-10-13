@@ -11,20 +11,11 @@ export default function Workout({ name, workout }) {
   const [editWorkoutFormState, setEditWorkoutFormState] = useState("");
 
   const deleteWorkout = async () => {
-    const res = await db
-      .collection(name)
-      .doc(workout.docId)
-      .collection("Sections")
-      .get();
+    const ref = db.collection(name).doc(workout.docId).collection("Sections");
+    const res = await ref.get();
     const datas = res.docs.map((data) => data.id);
-    console.log(datas);
     datas.forEach((doc) => {
-      console.log(doc);
-      db.collection(name)
-        .doc(workout.docId)
-        .collection("Sections")
-        .doc(doc)
-        .delete();
+      ref.doc(doc).delete();
     });
     console.log(datas);
     db.collection(name)
