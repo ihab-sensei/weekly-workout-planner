@@ -54,11 +54,8 @@ export default function Sections({ workout, name }) {
       .orderBy("createdAt")
       .onSnapshot((snapshot) => {
         const dataArr = [];
-       
-        
         snapshot.forEach((doc) =>
           dataArr.push({ ...doc.data(), docId: doc.id})
-          
         );
         console.log(dataArr)
         setSections(dataArr);
