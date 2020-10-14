@@ -115,7 +115,7 @@ export default function Section({ sections, name, workout }) {
     <>
       <Collapse>
         <Panel
-          style={{ margin: " 5px 0" }}
+          style={{ overflowWrap: "break-word", margin: " 5px 0" }}
           extra={menuExtraButton()}
           header={sections.sectionName}
         >
