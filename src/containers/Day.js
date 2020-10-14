@@ -4,6 +4,10 @@ import WorkoutForm from "../components/WorkoutForm";
 import db from "../firebaseConfig";
 import { Button, Modal, Tooltip } from "antd";
 import { PlusOutlined } from "@ant-design/icons";
+import * as firebase from "firebase";
+
+const timestamp = firebase.firestore.FieldValue.serverTimestamp;
+
 
 export default function Day({ name }) {
   const [modalState, setModalState] = useState({ visible: false });
@@ -41,16 +45,17 @@ export default function Day({ name }) {
   };
 
   const addWorkout = () => {
-    db.collection(name).add({ workoutName: workoutFormState[name] });
+    db.collection(name).add({ workoutName: workoutFormState[name],
+      createdAt: timestamp()
+     });
 
     handleOk();
   };
 
   useEffect(() => {
-    const unsubscribe = db.collection(name).onSnapshot((snapshot) => {
+    const unsubscribe = db.collection(name).orderBy("createdAt").onSnapshot((snapshot) => {
       const dataArr = [];
       snapshot.forEach((doc) => {
-        console.log(doc.id);
         dataArr.push({ ...doc.data(), docId: doc.id });
       });
       setDay(dataArr);

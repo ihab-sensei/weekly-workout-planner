@@ -4,6 +4,10 @@ import db from "../firebaseConfig";
 import Section from "../components/Section";
 import { Tooltip, Button, Modal } from "antd";
 import { PlusOutlined } from "@ant-design/icons";
+import * as firebase from "firebase"
+
+
+const timestamp = firebase.firestore.FieldValue.serverTimestamp;
 
 export default function Sections({ workout, name }) {
   const [sections, setSections] = useState([]);
@@ -34,22 +38,31 @@ export default function Sections({ workout, name }) {
   const addSections = () => {
     db.collection(name).doc(workout.docId).collection("Sections").add({
       sectionName: sectionFormState.sectionName,
-      sectionDescription: sectionFormState.sectionDescription
+      sectionDescription: sectionFormState.sectionDescription,
+      createdAt: timestamp()
     });
     handleOk();
   };
-  useEffect(() => {
+
+
+  useEffect(() => { 
+    
     const unsubscribe = db
       .collection(name)
       .doc(workout.docId)
       .collection("Sections")
+      .orderBy("createdAt")
       .onSnapshot((snapshot) => {
-        console.log("snap", snapshot);
         const dataArr = [];
+       
+        
         snapshot.forEach((doc) =>
-          dataArr.push({ ...doc.data(), docId: doc.id })
+          dataArr.push({ ...doc.data(), docId: doc.id})
+          
         );
+        console.log(dataArr)
         setSections(dataArr);
+
       });
     return unsubscribe;
   }, []);
@@ -68,7 +81,7 @@ export default function Sections({ workout, name }) {
           </Button>
         </Tooltip>
       </div>
-      {sections.reverse().map((section) => (
+      {sections.map((section) => (
         <Section
           key={sections.docId}
           name={name}

@@ -1,32 +1,30 @@
 import React from "react";
-import { Typography, Space, Image, Row, Col, Divider } from "antd";
+import { Typography, Space, Image} from "antd";
 import { FALLBACK_IMG, SPONGEBOB_ARM } from "../Images";
 
 const { Title, Text } = Typography;
 
 export default function About() {
   const flex = {
-    display: "flex",
-    flexDirection: "row",
-    flexWrap: "wrap"
+    display: "flex",    
   };
 
   const renderImg = () => {
     return (
-      <Image
-        style={{ margin: "1rem" }}
-        width={300}
-        height={200}
+      <img
+        style={{borderRadius: "8px", border: "5px solid black", maxWidth: "100%", height: "auto"}}
+      
         src={SPONGEBOB_ARM}
+        alt="Spongebob"
         fallback={FALLBACK_IMG}
       />
     );
   };
   return (
     <div style={flex}>
-      <div>
-        <Space direction="vertical">
-          <div>
+      <div style={{width: "50%"}}>
+        
+         
             <Title>About Weekly-Workout-Planner</Title>
             <Text>
               Sup' Bro! You want to learn more about this website! Cool! <br />
@@ -38,11 +36,11 @@ export default function About() {
               (duh!?), without training. Keep on rockin' that tank top, No pain,
               no gain etc. !
             </Text>
-          </div>
-        </Space>
+         
+       
       </div>
 
-      <div>{renderImg()}</div>
+      <div style={{marginLeft: "15rem", width: "50ß%"}}>{renderImg()}</div>
     </div>
   );
 }
