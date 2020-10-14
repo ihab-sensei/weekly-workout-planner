@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import Day from "./Day";
 import "./style.css";
-import { Card, Col, Row } from "antd";
+import { Card, Col, Row, Spin } from "antd";
 
 export default function DaysBoard() {
   const DAYS = [
@@ -14,7 +14,7 @@ export default function DaysBoard() {
     "Sunday"
   ];
  
-  const [loading, setLoading] = useState(false);
+  //const [loading, setLoading] = useState(true);
 
   return (
     <div className="site-card-wrapper">
@@ -28,8 +28,10 @@ export default function DaysBoard() {
             xl={3}
             style={{ margin: "0 0.5rem" }}
           >
-            <Card onClick={() => setLoading(false)} loading={loading} hoverable title={day} bordered style={{ width: "10rem" }}>
-              <Day setLoading={setLoading} key={day} name={day} />
+            <Card  hoverable title={day} bordered style={{ width: "10rem" }}>
+           
+                            <Day  key={day} name={day} />
+                          
             </Card>
             
           </Col>
