@@ -2,14 +2,16 @@ import React, { useEffect, useState } from "react";
 import Workout from "./Workout";
 import WorkoutForm from "../components/WorkoutForm";
 import db from "../firebaseConfig";
-import { Button, Modal, Tooltip } from "antd";
+import { Button, Modal, Tooltip, Spin } from "antd";
 import { PlusOutlined } from "@ant-design/icons";
 import * as firebase from "firebase";
-
+import "./style.css";
 const timestamp = firebase.firestore.FieldValue.serverTimestamp;
 
 
-export default function Day({ name }) {
+export default function Day({ name}) {
+  const [loading, setLoading] = useState(true);
+
   const [modalState, setModalState] = useState({ visible: false });
   const [day, setDay] = useState([]);
   const [workoutFormState, setWorkoutFormState] = useState({
@@ -21,6 +23,8 @@ export default function Day({ name }) {
     Saturday: "",
     Sunday: ""
   });
+
+
   const showModal = () => {
     setModalState({
       visible: true
@@ -31,11 +35,15 @@ export default function Day({ name }) {
     setModalState({
       visible: false
     });
+
+    
     /*
-    setWorkoutFormState({
+    setWorkoutFormState({  doesn't make it empty
       ...workoutFormState,
       [name]: ""
-    });*/
+    });
+    console.log(workoutFormState)
+    */ 
   };
 
   const handleCancel = () => {
@@ -51,20 +59,30 @@ export default function Day({ name }) {
 
     handleOk();
   };
+  
+ 
+
 
   useEffect(() => {
-    const unsubscribe = db.collection(name).orderBy("createdAt").onSnapshot((snapshot) => {
+    
+    const unsubscribe = db.collection(name).orderBy("createdAt")
+    .onSnapshot((snapshot) => {
+      setLoading(false);
       const dataArr = [];
       snapshot.forEach((doc) => {
         dataArr.push({ ...doc.data(), docId: doc.id });
       });
       setDay(dataArr);
+      setLoading(false);
     });
+    
     return unsubscribe;
   }, []);
 
   return (
+    
     <div className="weekDay">
+      {loading ? <div className="spin"><Spin/> </div> : null}
       <Tooltip title="Add">
         <Button
           onClick={showModal}
@@ -92,6 +110,9 @@ export default function Day({ name }) {
           name={name}
         />
       </Modal>
+
     </div>
+      
   );
+      
 }
