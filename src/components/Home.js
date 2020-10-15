@@ -5,15 +5,18 @@ import { FALLBACK_IMG, SPONGEBOB_MEME } from "../Images";
 const { Title, Text } = Typography;
 export default function Home() {
   const flex = {
-    display: "flex"
+    display: "flex",
+    justifyContent: "space-around",
+    flexWrap: "wrap",
   };
 
   const renderImg = () => {
     return (
       <Image
-        style={{ margin: "1rem" }}
-        width={300}
-        height={200}
+        style={{
+          maxWidth: "100%",
+          height: "auto",
+        }}
         src={SPONGEBOB_MEME}
         fallback={FALLBACK_IMG}
       />
