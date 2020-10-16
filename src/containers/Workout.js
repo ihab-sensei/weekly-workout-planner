@@ -3,7 +3,11 @@ import db from "../firebaseConfig";
 import Sections from "./Sections";
 import EditWorkoutForm from "../components/EditWorkoutForm";
 import { Tooltip, Typography, Button, Modal } from "antd";
-import { EditOutlined, DeleteOutlined } from "@ant-design/icons";
+import {
+  EditOutlined,
+  DeleteOutlined,
+  CheckCircleTwoTone
+} from "@ant-design/icons";
 
 const { Title } = Typography;
 export default function Workout({ name, workout }) {
@@ -38,6 +42,11 @@ export default function Workout({ name, workout }) {
 
     handleOk();
   };
+  const completeWorkout = () => {
+    db.collection(name)
+      .doc(workout.docId)
+      .update({ isComplete: !workout.isComplete });
+  };
   const showModal = () => {
     setModalState({
       visible: true
@@ -59,7 +68,11 @@ export default function Workout({ name, workout }) {
   return (
     <>
       <div>
-        <Title style={{ display: "inline" }} level={5}>
+        <Title
+          delete={workout.isComplete}
+          style={{ display: "inline" }}
+          level={5}
+        >
           {workout.workoutName}
         </Title>
         <Tooltip title="Edit">
@@ -77,6 +90,14 @@ export default function Workout({ name, workout }) {
             type="text"
             shape="circle"
             icon={<DeleteOutlined />}
+          />
+        </Tooltip>
+        <Tooltip title="Mark complete">
+          <Button
+            onClick={completeWorkout}
+            type="text"
+            shape="circle"
+            icon={<CheckCircleTwoTone twoToneColor="#52c41a" />}
           />
         </Tooltip>
       </div>

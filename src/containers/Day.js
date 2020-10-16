@@ -25,14 +25,6 @@ export default function Day({ name, filter }) {
       visible: false
     });
     setWorkoutFormState("");
-
-    /*
-    setWorkoutFormState({  
-      ...workoutFormState,
-       [name]: ""
-    });
-    console.log(workoutFormState)
-    */
   };
 
   const handleCancel = () => {
@@ -64,7 +56,7 @@ export default function Day({ name, filter }) {
             (data) => data.isComplete === false
           );
           setDay(filteredArr);
-        } else if (filter === "complete") {
+        } else if (filter === "completed") {
           const filteredArr = dataArr.filter(
             (data) => data.isComplete === true
           );
