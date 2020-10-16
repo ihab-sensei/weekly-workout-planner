@@ -83,7 +83,7 @@ export default function Day({ name, filter }) {
       });
 
     return unsubscribe;
-  }, []);
+  }, [filter]);
 
   return (
     <div className="weekDay">
