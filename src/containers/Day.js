@@ -54,26 +54,31 @@ export default function Day({ name}) {
 
   const addWorkout = () => {
     db.collection(name).add({ workoutName: workoutFormState[name],
-      createdAt: timestamp()
+      createdAt: timestamp(),
+      isComplete: false
      });
 
     handleOk();
   };
   
  
-
+//.where("isComplete", "==", false)
 
   useEffect(() => {
     
     const unsubscribe = db.collection(name).orderBy("createdAt")
     .onSnapshot((snapshot) => {
       setLoading(false);
+      
       const dataArr = [];
       snapshot.forEach((doc) => {
         dataArr.push({ ...doc.data(), docId: doc.id });
       });
-      setDay(dataArr);
-      setLoading(false);
+      console.log(dataArr)
+      const filteredArr = dataArr.filter(data => data.isComplete === false)
+      console.log("f",filteredArr)
+      setDay(dataArr); //filteredArr
+     
     });
     
     return unsubscribe;

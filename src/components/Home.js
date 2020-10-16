@@ -14,6 +14,7 @@ export default function Home() {
     return (
       <Image
         style={{
+         
           maxWidth: "100%",
           height: "auto",
         }}
