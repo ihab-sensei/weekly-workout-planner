@@ -12,6 +12,7 @@ export default function WorkoutForm({
       ...workoutFormState,
       [e.target.id]: e.target.value
     });
+    
   };
   return (
     <div>
