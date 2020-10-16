@@ -12,15 +12,7 @@ export default function Day({ name, filter }) {
   const [loading, setLoading] = useState(true);
   const [modalState, setModalState] = useState({ visible: false });
   const [day, setDay] = useState([]);
-  const [workoutFormState, setWorkoutFormState] = useState({
-    Monday: "",
-    Tuesday: "",
-    Wednesday: "",
-    Thursday: "",
-    Friday: "",
-    Saturday: "",
-    Sunday: ""
-  });
+  const [workoutFormState, setWorkoutFormState] = useState("");
 
   const showModal = () => {
     setModalState({
@@ -32,6 +24,7 @@ export default function Day({ name, filter }) {
     setModalState({
       visible: false
     });
+    setWorkoutFormState("");
 
     /*
     setWorkoutFormState({  
@@ -50,7 +43,7 @@ export default function Day({ name, filter }) {
 
   const addWorkout = () => {
     db.collection(name).add({
-      workoutName: workoutFormState[name],
+      workoutName: workoutFormState,
       createdAt: timestamp()
     });
 
@@ -83,7 +76,7 @@ export default function Day({ name, filter }) {
       });
 
     return unsubscribe;
-  }, []);
+  }, [filter]);
 
   return (
     <div className="weekDay">

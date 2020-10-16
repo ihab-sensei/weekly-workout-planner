@@ -8,10 +8,7 @@ export default function WorkoutForm({
   name
 }) {
   const handleChange = (e) => {
-    setWorkoutFormState({
-      ...workoutFormState,
-      [e.target.id]: e.target.value
-    });
+    setWorkoutFormState(e.target.value);
     
   };
   return (
@@ -20,7 +17,7 @@ export default function WorkoutForm({
         type="text"
         id={name}
         name="workoutName"
-        value={workoutFormState.name}
+        value={workoutFormState}
         onChange={(e) => handleChange(e)}
         placeholder="Enter workout name"
         prefix={<FireOutlined className="site-form-item-icon" />}
