@@ -8,10 +8,8 @@ import * as firebase from "firebase";
 import "./style.css";
 const timestamp = firebase.firestore.FieldValue.serverTimestamp;
 
-
-export default function Day({ name}) {
+export default function Day({ name, filter }) {
   const [loading, setLoading] = useState(true);
-
   const [modalState, setModalState] = useState({ visible: false });
   const [day, setDay] = useState([]);
   const [workoutFormState, setWorkoutFormState] = useState({
@@ -24,7 +22,6 @@ export default function Day({ name}) {
     Sunday: ""
   });
 
-
   const showModal = () => {
     setModalState({
       visible: true
@@ -36,14 +33,13 @@ export default function Day({ name}) {
       visible: false
     });
 
-    
     /*
     setWorkoutFormState({  doesn't make it empty
       ...workoutFormState,
       [name]: ""
     });
     console.log(workoutFormState)
-    */ 
+    */
   };
 
   const handleCancel = () => {
@@ -53,36 +49,49 @@ export default function Day({ name}) {
   };
 
   const addWorkout = () => {
-    db.collection(name).add({ workoutName: workoutFormState[name],
+    db.collection(name).add({
+      workoutName: workoutFormState[name],
       createdAt: timestamp()
-     });
+    });
 
     handleOk();
   };
-  
- 
-
 
   useEffect(() => {
-    
-    const unsubscribe = db.collection(name).orderBy("createdAt")
-    .onSnapshot((snapshot) => {
-      setLoading(false);
-      const dataArr = [];
-      snapshot.forEach((doc) => {
-        dataArr.push({ ...doc.data(), docId: doc.id });
+    const unsubscribe = db
+      .collection(name)
+      .orderBy("createdAt")
+      .onSnapshot((snapshot) => {
+        const dataArr = [];
+        snapshot.forEach((doc) => {
+          dataArr.push({ ...doc.data(), docId: doc.id });
+        });
+        if (filter === "incomplete") {
+          const filteredArr = dataArr.filter(
+            (data) => data.isComplete === false
+          );
+          setDay(filteredArr);
+        } else if (filter === "complete") {
+          const filteredArr = dataArr.filter(
+            (data) => data.isComplete === true
+          );
+          setDay(filteredArr);
+        } else {
+          setDay(dataArr);
+        }
+        setLoading(false);
       });
-      setDay(dataArr);
-      setLoading(false);
-    });
-    
+
     return unsubscribe;
   }, []);
 
   return (
-    
     <div className="weekDay">
-      {loading ? <div className="spin"><Spin/> </div> : null}
+      {loading ? (
+        <div className="spin">
+          <Spin />{" "}
+        </div>
+      ) : null}
       <Tooltip title="Add">
         <Button
           onClick={showModal}
@@ -110,9 +119,6 @@ export default function Day({ name}) {
           name={name}
         />
       </Modal>
-
     </div>
-      
   );
-      
 }
