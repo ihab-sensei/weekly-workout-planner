@@ -17,11 +17,18 @@ export default function DaysBoard() {
     "Sunday"
   ];
 
+  const handleSortClick = ({key}) => {
+    console.log(key)
+    setFilter(key)
+    console.log(filter)
+   
+  }
+
   const menu = (
-    <Menu>
-      <Menu.Item key="1">Default</Menu.Item>
-      <Menu.Item key="2">Completed</Menu.Item>
-      <Menu.Item key="3">Incomplete</Menu.Item>
+    <Menu onClick={handleSortClick}>
+      <Menu.Item  key="default">Default</Menu.Item>
+      <Menu.Item  key="completed">Completed</Menu.Item>
+      <Menu.Item  key="incomplete">Incomplete</Menu.Item>
     </Menu>
   );
 
@@ -47,10 +54,11 @@ export default function DaysBoard() {
       </div>
 
       <div>
-      <Dropdown overlay={menu} trigger={['hover']}>
-      < > 
+      <Dropdown overlay={menu} >
+      <a  className="ant-dropdown-link" onClick={e => e.preventDefault()}>
       Sort by <DownOutlined />
-      </>
+    </a>
+     
     </Dropdown>
 
        
