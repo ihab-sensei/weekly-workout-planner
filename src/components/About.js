@@ -18,6 +18,7 @@ export default function About() {
           border: "5px solid black",
           maxWidth: "100%",
           height: "auto",
+          
         }}
         src={SPONGEBOB_ARM}
         alt="Spongebob"

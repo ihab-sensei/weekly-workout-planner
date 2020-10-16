@@ -34,9 +34,9 @@ export default function Day({ name, filter }) {
     });
 
     /*
-    setWorkoutFormState({  doesn't make it empty
+    setWorkoutFormState({  
       ...workoutFormState,
-      [name]: ""
+       [name]: ""
     });
     console.log(workoutFormState)
     */
