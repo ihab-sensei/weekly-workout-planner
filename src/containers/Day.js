@@ -10,7 +10,7 @@ import "./style.css";
 const { Title } = Typography;
 const timestamp = firebase.firestore.FieldValue.serverTimestamp;
 
-export default function Day({ name, filter, view }) {
+export default function Day({ name, filter, view, sort }) {
   const [loading, setLoading] = useState(true);
   const [modalState, setModalState] = useState({ visible: false });
   const [day, setDay] = useState([]);
@@ -18,20 +18,20 @@ export default function Day({ name, filter, view }) {
 
   const showModal = () => {
     setModalState({
-      visible: true,
+      visible: true
     });
   };
 
   const handleOk = () => {
     setModalState({
-      visible: false,
+      visible: false
     });
     setWorkoutFormState("");
   };
 
   const handleCancel = () => {
     setModalState({
-      visible: false,
+      visible: false
     });
   };
 
@@ -39,6 +39,8 @@ export default function Day({ name, filter, view }) {
     db.collection(name).add({
       workoutName: workoutFormState,
       createdAt: timestamp(),
+      isComplete: false,
+      completeSort: 0
     });
 
     handleOk();
@@ -47,7 +49,8 @@ export default function Day({ name, filter, view }) {
   useEffect(() => {
     const unsubscribe = db
       .collection(name)
-      .orderBy("createdAt")
+      .orderBy(sort.sortType, sort.sortOrder)
+      //.orderBy("completeSort", "desc")
       .onSnapshot((snapshot) => {
         const dataArr = [];
         snapshot.forEach((doc) => {
@@ -70,7 +73,7 @@ export default function Day({ name, filter, view }) {
       });
 
     return unsubscribe;
-  }, [filter]);
+  }, [filter, sort]);
 
   return (
     <div className="weekDay">

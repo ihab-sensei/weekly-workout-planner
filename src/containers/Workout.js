@@ -6,7 +6,7 @@ import { Tooltip, Typography, Button, Modal } from "antd";
 import {
   EditOutlined,
   DeleteOutlined,
-  CheckCircleTwoTone,
+  CheckCircleTwoTone
 } from "@ant-design/icons";
 
 const { Title } = Typography;
@@ -45,23 +45,26 @@ export default function Workout({ name, workout, view }) {
   const completeWorkout = () => {
     db.collection(name)
       .doc(workout.docId)
-      .update({ isComplete: !workout.isComplete });
+      .update({
+        isComplete: !workout.isComplete,
+        completeSort: !workout.isComplete ? 1 : 0
+      });
   };
   const showModal = () => {
     setModalState({
-      visible: true,
+      visible: true
     });
   };
 
   const handleOk = () => {
     setModalState({
-      visible: false,
+      visible: false
     });
   };
 
   const handleCancel = () => {
     setModalState({
-      visible: false,
+      visible: false
     });
   };
 
