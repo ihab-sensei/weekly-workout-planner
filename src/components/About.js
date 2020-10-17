@@ -39,6 +39,10 @@ export default function About() {
           the dudes who designed this website care about ease of use,
           <br /> so you can easily use it (duh!?), without training. Keep on
           rockin' that tank top, No pain, no gain etc. !
+        </Text> <br/>
+        <Text>ThiccBois: 
+        <a href="https://github.com/bertacsevercan" >Bertaç Severcan</a> &
+        <a href="https://github.com/ihab-sensei" >Ihab Severcan</a>
         </Text>
       </div>
 

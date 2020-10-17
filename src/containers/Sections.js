@@ -12,33 +12,37 @@ export default function Sections({ workout, name, view }) {
   const [sections, setSections] = useState([]);
   const [sectionFormState, setSectionFormState] = useState({
     sectionName: "",
-    sectionDescription: "",
+    sectionDescription: ""
   });
   const [sectionModalState, setSectionModalState] = useState({
-    visible: false,
+    visible: false
   });
 
   const showModal = () => {
     setSectionModalState({
-      visible: true,
+      visible: true
     });
   };
   const handleOk = () => {
     setSectionModalState({
-      visible: false,
+      visible: false
+    });
+    setSectionFormState({
+      sectionName: "",
+      sectionDescription: ""
     });
   };
 
   const handleCancel = () => {
     setSectionModalState({
-      visible: false,
+      visible: false
     });
   };
   const addSections = () => {
     db.collection(name).doc(workout.docId).collection("Sections").add({
       sectionName: sectionFormState.sectionName,
       sectionDescription: sectionFormState.sectionDescription,
-      createdAt: timestamp(),
+      createdAt: timestamp()
     });
     handleOk();
   };
