@@ -6,11 +6,11 @@ import { Tooltip, Typography, Button, Modal } from "antd";
 import {
   EditOutlined,
   DeleteOutlined,
-  CheckCircleTwoTone
+  CheckCircleTwoTone,
 } from "@ant-design/icons";
 
 const { Title } = Typography;
-export default function Workout({ name, workout }) {
+export default function Workout({ name, workout, view }) {
   const [modalState, setModalState] = useState({ visible: false });
   const [editWorkoutFormState, setEditWorkoutFormState] = useState(
     workout.workoutName
@@ -49,25 +49,28 @@ export default function Workout({ name, workout }) {
   };
   const showModal = () => {
     setModalState({
-      visible: true
+      visible: true,
     });
   };
 
   const handleOk = () => {
     setModalState({
-      visible: false
+      visible: false,
     });
   };
 
   const handleCancel = () => {
     setModalState({
-      visible: false
+      visible: false,
     });
   };
 
   return (
     <>
-      <div>
+      <div
+        style={{ padding: "7px", margin: "7px 0" }}
+        className="workoutContainer"
+      >
         <Title
           delete={workout.isComplete}
           style={{ display: "inline" }}
@@ -75,34 +78,42 @@ export default function Workout({ name, workout }) {
         >
           {workout.workoutName}
         </Title>
-        <Tooltip title="Edit">
-          <Button
-            onClick={showModal}
-            type="text"
-            shape="circle"
-            icon={<EditOutlined />}
-          ></Button>
-        </Tooltip>
-        <Tooltip title="Delete">
-          <Button
-            danger={true}
-            onClick={deleteWorkout}
-            type="text"
-            shape="circle"
-            icon={<DeleteOutlined />}
-          />
-        </Tooltip>
-        <Tooltip title="Mark complete">
-          <Button
-            onClick={completeWorkout}
-            type="text"
-            shape="circle"
-            icon={<CheckCircleTwoTone twoToneColor="#52c41a" />}
-          />
-        </Tooltip>
-      </div>
-      <Sections name={name} workout={workout} />
+        {view === "cardView" ? (
+          <>
+            <Tooltip title="Edit">
+              <Button
+                onClick={showModal}
+                type="text"
+                shape="circle"
+                icon={<EditOutlined />}
+              ></Button>
+            </Tooltip>
+            <Tooltip title="Delete">
+              <Button
+                danger={true}
+                onClick={deleteWorkout}
+                type="text"
+                shape="circle"
+                icon={<DeleteOutlined />}
+              />
+            </Tooltip>
+            <Tooltip title="Mark complete">
+              <Button
+                onClick={completeWorkout}
+                type="text"
+                shape="circle"
+                icon={
+                  <CheckCircleTwoTone
+                    twoToneColor={workout.isComplete ? "#52c41a" : "#a8a8a8"}
+                  />
+                }
+              />
+            </Tooltip>
+          </>
+        ) : null}
 
+        <Sections view={view} name={name} workout={workout} />
+      </div>
       <Modal
         title="Edit the name of the workout"
         visible={modalState.visible}

@@ -2,13 +2,15 @@ import React, { useEffect, useState } from "react";
 import Workout from "./Workout";
 import WorkoutForm from "../components/WorkoutForm";
 import db from "../firebaseConfig";
-import { Button, Modal, Tooltip, Spin } from "antd";
+import { Button, Modal, Tooltip, Typography, Spin } from "antd";
 import { PlusOutlined } from "@ant-design/icons";
 import * as firebase from "firebase";
 import "./style.css";
+
+const { Title } = Typography;
 const timestamp = firebase.firestore.FieldValue.serverTimestamp;
 
-export default function Day({ name, filter }) {
+export default function Day({ name, filter, view }) {
   const [loading, setLoading] = useState(true);
   const [modalState, setModalState] = useState({ visible: false });
   const [day, setDay] = useState([]);
@@ -16,27 +18,27 @@ export default function Day({ name, filter }) {
 
   const showModal = () => {
     setModalState({
-      visible: true
+      visible: true,
     });
   };
 
   const handleOk = () => {
     setModalState({
-      visible: false
+      visible: false,
     });
     setWorkoutFormState("");
   };
 
   const handleCancel = () => {
     setModalState({
-      visible: false
+      visible: false,
     });
   };
 
   const addWorkout = () => {
     db.collection(name).add({
       workoutName: workoutFormState,
-      createdAt: timestamp()
+      createdAt: timestamp(),
     });
 
     handleOk();
@@ -77,19 +79,26 @@ export default function Day({ name, filter }) {
           <Spin />{" "}
         </div>
       ) : null}
-      <Tooltip title="Add">
-        <Button
-          onClick={showModal}
-          type="primary"
-          icon={<PlusOutlined />}
-          size="small"
-        >
-          Workout
-        </Button>
-      </Tooltip>
+      {view === "cardView" ? (
+        <Tooltip title="Add">
+          <Button
+            onClick={showModal}
+            type="primary"
+            icon={<PlusOutlined />}
+            size="small"
+          >
+            Workout
+          </Button>
+        </Tooltip>
+      ) : null}
 
       {day.map((workout) => (
-        <Workout key={workout.docId} name={name} workout={workout} />
+        <Workout
+          view={view}
+          key={workout.docId}
+          name={name}
+          workout={workout}
+        />
       ))}
 
       <Modal
@@ -104,6 +113,11 @@ export default function Day({ name, filter }) {
           name={name}
         />
       </Modal>
+      {day.length === 0 && !loading ? (
+        <Title mark level={4}>
+          No workouts for this day!
+        </Title>
+      ) : null}
     </div>
   );
 }

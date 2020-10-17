@@ -6,7 +6,7 @@ import {
   Collapse,
   Button,
   Tooltip,
-  Modal
+  Modal,
 } from "antd";
 import db from "../firebaseConfig";
 import { DeleteOutlined, MoreOutlined, EditOutlined } from "@ant-design/icons";
@@ -14,11 +14,11 @@ import EditSectionForm from "./EditSectionForm";
 const { Text } = Typography;
 const { Panel } = Collapse;
 
-export default function Section({ sections, name, workout }) {
+export default function Section({ sections, name, workout, view }) {
   const [modalState, setModalState] = useState({ visible: false });
   const [editSectionFormState, setEditSectionFormState] = useState({
     sectionName: sections.sectionName,
-    sectionDescription: sections.sectionDescription
+    sectionDescription: sections.sectionDescription,
   });
 
   const deleteSection = () => {
@@ -42,13 +42,13 @@ export default function Section({ sections, name, workout }) {
       .doc(sections.docId)
       .update({
         sectionName: editSectionFormState.sectionName,
-        sectionDescription: editSectionFormState.sectionDescription
+        sectionDescription: editSectionFormState.sectionDescription,
       });
     handleOk();
   };
   const deleteExtraButton = () => {
     return (
-      <Tooltip title="Delete">
+      <Tooltip placement="right" title="Delete">
         <Button
           danger={true}
           onClick={(e) => {
@@ -64,25 +64,25 @@ export default function Section({ sections, name, workout }) {
   };
   const showModal = () => {
     setModalState({
-      visible: true
+      visible: true,
     });
   };
 
   const handleOk = () => {
     setModalState({
-      visible: false
+      visible: false,
     });
   };
 
   const handleCancel = () => {
     setModalState({
-      visible: false
+      visible: false,
     });
   };
 
   const editExtraButton = () => {
     return (
-      <Tooltip title="Edit">
+      <Tooltip placement="right" title="Edit">
         <Button
           onClick={(e) => {
             showModal();
@@ -116,7 +116,7 @@ export default function Section({ sections, name, workout }) {
       <Collapse>
         <Panel
           style={{ overflowWrap: "break-word", margin: " 5px 0" }}
-          extra={menuExtraButton()}
+          extra={view === "cardView" ? menuExtraButton() : null}
           header={sections.sectionName}
         >
           <Text>{sections.sectionDescription}</Text>

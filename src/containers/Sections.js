@@ -4,49 +4,46 @@ import db from "../firebaseConfig";
 import Section from "../components/Section";
 import { Tooltip, Button, Modal } from "antd";
 import { PlusOutlined } from "@ant-design/icons";
-import * as firebase from "firebase"
-
+import * as firebase from "firebase";
 
 const timestamp = firebase.firestore.FieldValue.serverTimestamp;
 
-export default function Sections({ workout, name }) {
+export default function Sections({ workout, name, view }) {
   const [sections, setSections] = useState([]);
   const [sectionFormState, setSectionFormState] = useState({
     sectionName: "",
-    sectionDescription: ""
+    sectionDescription: "",
   });
   const [sectionModalState, setSectionModalState] = useState({
-    visible: false
+    visible: false,
   });
 
   const showModal = () => {
     setSectionModalState({
-      visible: true
+      visible: true,
     });
   };
   const handleOk = () => {
     setSectionModalState({
-      visible: false
+      visible: false,
     });
   };
 
   const handleCancel = () => {
     setSectionModalState({
-      visible: false
+      visible: false,
     });
   };
   const addSections = () => {
     db.collection(name).doc(workout.docId).collection("Sections").add({
       sectionName: sectionFormState.sectionName,
       sectionDescription: sectionFormState.sectionDescription,
-      createdAt: timestamp()
+      createdAt: timestamp(),
     });
     handleOk();
   };
 
-
-  useEffect(() => { 
-    
+  useEffect(() => {
     const unsubscribe = db
       .collection(name)
       .doc(workout.docId)
@@ -55,31 +52,34 @@ export default function Sections({ workout, name }) {
       .onSnapshot((snapshot) => {
         const dataArr = [];
         snapshot.forEach((doc) =>
-          dataArr.push({ ...doc.data(), docId: doc.id})
+          dataArr.push({ ...doc.data(), docId: doc.id })
         );
-        console.log(dataArr)
+        console.log(dataArr);
         setSections(dataArr);
-
       });
     return unsubscribe;
   }, []);
 
   return (
     <>
-      <div style={{ margin: " 5px 0" }}>
-        <Tooltip title="Add">
-          <Button
-            onClick={showModal}
-            type="primary"
-            icon={<PlusOutlined />}
-            size="small"
-          >
-            Section
-          </Button>
-        </Tooltip>
-      </div>
+      {view === "cardView" ? (
+        <div style={{ margin: " 5px 0" }}>
+          <Tooltip title="Add">
+            <Button
+              onClick={showModal}
+              type="primary"
+              icon={<PlusOutlined />}
+              size="small"
+            >
+              Section
+            </Button>
+          </Tooltip>
+        </div>
+      ) : null}
+
       {sections.map((section) => (
         <Section
+          view={view}
           key={sections.docId}
           name={name}
           workout={workout}

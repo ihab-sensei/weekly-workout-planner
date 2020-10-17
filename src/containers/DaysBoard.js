@@ -1,12 +1,39 @@
 import React, { useState } from "react";
 import Day from "./Day";
 import "./style.css";
-import { Card, Col, Row, Menu, Dropdown } from "antd";
+import { Card, Col, Row, Menu, Dropdown, Tabs, message } from "antd";
 import { DownOutlined } from "@ant-design/icons";
-
+const { TabPane } = Tabs;
 export default function DaysBoard() {
   const [filter, setFilter] = useState("default");
-
+  const [view, setView] = useState("cardView");
+  const cardView = () => {
+    return (
+      <Row gutter={8}>
+        {DAYS.map((day) => (
+          <Col xs={24} sm={24} md={12} lg={12} xl={8}>
+            <Card style={{ margin: "10px 0" }} hoverable title={day} bordered>
+              <Day view={view} key={day} filter={filter} name={day} />
+            </Card>
+          </Col>
+        ))}
+      </Row>
+    );
+  };
+  const tabView = () => {
+    return (
+      <Tabs tabPosition="left">
+        {DAYS.map((day, index) => (
+          <TabPane tab={day} key={index}>
+            <Day view={view} key={day} filter={filter} name={day} />
+          </TabPane>
+        ))}
+      </Tabs>
+    );
+  };
+  const warning = () => {
+    message.warning("You can't add or modify workouts in tab view", 3.5);
+  };
   const DAYS = [
     "Monday",
     "Tuesday",
@@ -14,47 +41,49 @@ export default function DaysBoard() {
     "Thursday",
     "Friday",
     "Saturday",
-    "Sunday"
+    "Sunday",
   ];
 
   const handleSortClick = ({ key }) => {
     setFilter(key);
   };
+  const handleViewChange = ({ key }) => {
+    setView(key);
+    if (key === "tabView") {
+      warning();
+    }
+  };
 
   const menu = (
     <Menu onClick={handleSortClick}>
       <Menu.Item key="default">Default</Menu.Item>
-      <Menu.Item key="completed">Completed</Menu.Item>
+      <Menu.Item key="completed">Complete</Menu.Item>
       <Menu.Item key="incomplete">Incomplete</Menu.Item>
+    </Menu>
+  );
+  const viewMenu = (
+    <Menu onClick={handleViewChange}>
+      <Menu.Item key="cardView">Card View</Menu.Item>
+      <Menu.Item key="tabView">Tab View</Menu.Item>
     </Menu>
   );
 
   return (
     <div>
-      <div>
-        <Dropdown overlay={menu}>
+      <div style={{ display: "flex", justifyContent: "space-between" }}>
+        <Dropdown trigger={["click"]} overlay={menu}>
           <a className="ant-dropdown-link" onClick={(e) => e.preventDefault()}>
-            Sort by <DownOutlined />
+            Filter by <DownOutlined />
+          </a>
+        </Dropdown>
+        <Dropdown trigger={["click"]} overlay={viewMenu}>
+          <a className="ant-dropdown-link" onClick={(e) => e.preventDefault()}>
+            Change view <DownOutlined />
           </a>
         </Dropdown>
       </div>
       <div className="site-card-wrapper">
-        <Row gutter={{ xs: 8, sm: 16, md: 24, lg: 32 }}>
-          {DAYS.map((day) => (
-            <Col
-              xs={16}
-              sm={10}
-              md={8}
-              lg={6}
-              xl={3}
-              style={{ margin: "0 0.5rem" }}
-            >
-              <Card hoverable title={day} bordered style={{ width: "10rem" }}>
-                <Day key={day} filter={filter} name={day} />
-              </Card>
-            </Col>
-          ))}
-        </Row>
+        {view === "cardView" ? cardView() : tabView()}
       </div>
     </div>
   );
